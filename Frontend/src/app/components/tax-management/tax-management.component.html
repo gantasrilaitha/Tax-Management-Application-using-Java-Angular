@@ -1,0 +1,115 @@
+<h1>Tax Management</h1>
+<div>
+
+    <h2>Tax Management</h2>
+    <button (click)="loadTaxes()">Refresh Taxes</button>
+    <table class="table table-striped" >
+        <thead>
+          <tr>
+            <th>FormType</th>
+            <th>FilingDate</th>
+            <th>TaxAmount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tax of taxes">
+            <td>{{ tax.formType }}</td>
+            <td>{{ tax.filingDate }}</td>
+            <td>{{tax.totalTaxAmount}}</td>
+            <td> <button (click)="selectTax(tax)">Select</button>
+                <button (click)="updateTaxForm(tax.taxFormId)">Update</button>
+                <button (click)="deleteTax(tax.taxFormId)">Delete</button>
+            
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+
+</div>
+<h3>Add Tax</h3>
+<form #taxForm="ngForm" (ngSubmit)="isUpdateMode ? updateTax() : addTax()" novalidate>
+    <div>
+      <!-- Form Type -->
+      <label for="formType">Form Type</label>
+      <input
+        type="text"
+        id="formType"
+        name="formType"
+        class="form-control"
+        [(ngModel)]="selectedTax.formType"
+        required
+      />
+      <div *ngIf="taxForm.touched && !taxForm.form.controls['formType']?.valid">
+        <small *ngIf="taxForm.form.controls['formType']?.hasError('required')">
+          Form Type cannot be blank.
+        </small>
+      </div>
+    </div>
+  
+    <div>
+      <!-- Filing Date -->
+      <label for="filingDate">Filing Date</label>
+      <input
+        type="date"
+        id="filingDate"
+        name="filingDate"
+        [(ngModel)]="selectedTax.filingDate"
+        required
+        class="form-control"
+        (change)="validateDate($event)"
+      />
+      <div *ngIf="taxForm.touched && !taxForm.form.controls['filingDate']?.valid">
+        <small *ngIf="taxForm.form.controls['filingDate']?.hasError('required')">
+          Filing Date is required.
+        </small>
+      </div>
+      <div *ngIf="dateError">
+        <small>Filing Date cannot be in the future.</small>
+      </div>
+    </div>
+  
+    <div>
+      <!-- Total Tax Amount -->
+      <label for="totalTaxAmount">Total Tax Amount</label>
+      <input
+        type="number"
+        id="totalTaxAmount"
+        name="totalTaxAmount"
+        [(ngModel)]="selectedTax.totalTaxAmount"
+        required
+        class="form-control"
+        min="0.01"
+      />
+      <div *ngIf="taxForm.touched && !taxForm.form.controls['totalTaxAmount']?.valid">
+        <small *ngIf="taxForm.form.controls['totalTaxAmount']?.hasError('required')">
+          Total Tax Amount cannot be null.
+        </small>
+        <small *ngIf="taxForm.form.controls['totalTaxAmount']?.hasError('min')">
+          Total Tax Amount must be positive.
+        </small>
+      </div>
+    </div>
+  
+    <div>
+      <!-- User ID -->
+      <label for="userId">User ID</label>
+      <input
+        type="number"
+        id="userId"
+        name="userId"
+        [(ngModel)]="selectedTax.userId" name="userId"
+        required
+        class="form-control"
+      />
+      <div *ngIf="taxForm.touched && !taxForm.form.controls['userId']?.valid">
+        <small *ngIf="taxForm.form.controls['userId']?.hasError('required')">
+          UserId cannot be blank.
+        </small>
+      </div>
+    </div>
+  
+    <button type="submit" > {{ isUpdateMode ? 'Update Task' : 'Add ' }}</button>
+  </form>
+  

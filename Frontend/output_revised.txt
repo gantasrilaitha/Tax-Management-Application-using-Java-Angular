@@ -1,0 +1,6 @@
+taxserviceBusinessShouldBeCreated=true
+taxserviceBusinessShouldFetchAllTaxes=true
+taxserviceBusinessShouldGetTaxById=true
+taxserviceBusinessShouldCreateANewTax=true
+taxserviceBusinessShouldUpdateAnExistingTax=true
+taxserviceBusinessShouldDeleteATax=true
